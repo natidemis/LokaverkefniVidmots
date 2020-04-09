@@ -34,6 +34,7 @@ public class Textaritill extends JFrame {
     private final JMenu chooseTheme = new JMenu("Choose Theme");
     private final JMenu backgroundTheme = new JMenu("Background");
     private final JMenuItem textTheme = new JMenuItem("Text");
+    private final JMenuItem textAreaTheme = new JMenuItem("Text Area");
     private final JMenuItem newFile = new JMenuItem("New - Ctrl + N");
     private final JMenuItem save = new JMenuItem("Save - Ctrl + S");
     private final JMenuItem saveAs = new JMenuItem("Save As - Ctrl + A");
@@ -58,6 +59,7 @@ public class Textaritill extends JFrame {
      * choseTheme(JMenu) - Inniheldur "Background" og "Text" valblað og hlut
      * backgroundTheme(JMenu) - inniheldur hluti sem eru notuð til að skipta um þema "Dark theme" og "Light Theme"
      * textTheme(JMenuItem) - Hlutur sem leyfir notanda að velja lit á textan sinn
+     * textAreTheme(JMenuItem) - Hlutur sem leyfir notanda a velja lit á bakgrunn textasvæðisins
      * newFile(JMenuItem) - Leyfir notenda að opna tómt textasvæði í núverandi flipu
      * save(JMenuItem) - leyfir notenda að vista texta í núverandi flipu
      * saveAs(JMenuItem) - leyfir notenda að vista núverandi texta í skrá 
@@ -90,8 +92,10 @@ public class Textaritill extends JFrame {
         backgroundTheme.add(lightTheme);
         chooseTheme.add(backgroundTheme);
         chooseTheme.add(textTheme);
+        chooseTheme.add(textAreaTheme);
         themesAndTools.add(chooseTheme);
         textThemeListener(textTheme);
+        areaThemeListener(textAreaTheme);
         searchAndReplaceListener(searchAndReplace);
         newTabListener(newTab);
         newFileListener(newFile);
@@ -310,6 +314,10 @@ public class Textaritill extends JFrame {
             textIO.setTextarAtIndex(textIO.getTabbedPane().getSelectedIndex(), "");
         }
     }
+    /**
+     * byr til nýja flipu þegar smellt er á
+     * @param newTab "New Tab" hlutur í valblaðinu
+     */
     private void newTabListener(JMenuItem newTab){
         newTab.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -317,6 +325,10 @@ public class Textaritill extends JFrame {
             }
         });
     }
+    /**
+     * Listar á Search and Replace hlutinn í valblaðinu
+     * og opnar dialog glugga.
+     */
     private void searchAndReplaceListener(JMenuItem sr){
         sr.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -341,6 +353,22 @@ public class Textaritill extends JFrame {
                     for(int i = 0; i < tPane.getTabCount();i++){
                         JTextArea area = textIO.getTextAreaAtIndex(i);
                         area.setForeground(jc.getColor());
+                    }
+                }
+                textIO.setTextColor(jc.getColor());
+            }
+        });
+    }
+    private void areaThemeListener(JMenuItem textAreaTheme){
+        textAreaTheme.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                JColorChooser jc = new JColorChooser();
+                Object obj = jc;
+                int val = JOptionPane.showConfirmDialog(null,jc,"Color Chooser", JOptionPane.OK_CANCEL_OPTION);
+                if(val == JOptionPane.YES_OPTION){
+                    for(int i = 0; i < tPane.getTabCount();i++){
+                        JTextArea area = textIO.getTextAreaAtIndex(i);
+                        area.setBackground(jc.getColor());
                     }
                 }
                 textIO.setTextColor(jc.getColor());
