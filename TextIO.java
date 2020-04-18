@@ -6,9 +6,6 @@
  */
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.basic.BasicTabbedPaneUI.TabbedPaneLayout;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
