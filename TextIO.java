@@ -16,7 +16,7 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public class TextIO{
-    private String[] textar = new String[10];//geymir textan sem forritið sækir. 
+    private String[] textData = new String[10];//geymir textan sem forritið sækir. 
     private String[] selPaths = new String[10];// geymir hlekkin á skráni
     private JTextArea currentTextArea;//núverandi textasvæði
     private String title = "untitled";//titill núverandiflipu
@@ -25,7 +25,7 @@ public class TextIO{
     private Color textAreaColor;
     /**
      * Fastayrðing gagna:
-     * textar(String[]) - geymir upphafsstöðu allaflipa(til að athuga breyting texta flipunar)
+     * textData(String[]) - geymir upphafsstöðu allaflipa(til að athuga breyting texta flipunar)
      * selPaths(String[]) - geymir streng sem hlekk á flipu
      * currentTextAre(JTextArea) - núverandi textasvæði sem notandi vinnur með
      * title(String) - geymir titil á nuverandi flipu
@@ -36,13 +36,13 @@ public class TextIO{
 
      /**
       * upphafstillir flipuna, textColor,textAreaColor, og
-       fyllir á textar og SelPaths sem tóman streng
+       fyllir á textData og SelPaths sem tóman streng
       */
     protected TextIO(){
         tabbedPane = new JTabbedPane();
         textColor = Color.BLACK;
         textAreaColor = Color.white;
-        Arrays.fill(textar,"");
+        Arrays.fill(textData,"");
         Arrays.fill(selPaths,"");
     }
     /**
@@ -83,16 +83,16 @@ public class TextIO{
      * upphafstexta flipana
      * @return fylki af öllum textum 
      */
-    protected String[] getTextar(){
-        return this.textar;
+    protected String[] getTextData(){
+        return this.textData;
     }
     /**
      * skilar upphafstexta ákveðna flipu
      * @param idx vísi á tabflipu
      * @return texti tabflipunar
      */
-    protected String getTextarAtIndex(int idx){
-        return this.textar[idx];
+    protected String getTextDataAtIndex(int idx){
+        return this.textData[idx];
     }
     /**
      * skilar hlekkinn sem flipan í sæti "idx" er að nota
@@ -123,8 +123,8 @@ public class TextIO{
     * @param idx vísi í tab flipu
     * @param s texti 
     */
-    protected void setTextarAtIndex(int idx, String s){
-        this.textar[idx] = s;
+    protected void setTextDataAtIndex(int idx, String s){
+        this.textData[idx] = s;
     }
     /**
      * stillir á textasvæðið sem við viljum vinna með
@@ -153,7 +153,7 @@ public class TextIO{
                 line = in.readLine();
             }
             in.close();
-            textar[tabbedPane.getSelectedIndex()] = currentTextArea.getText();
+            textData[tabbedPane.getSelectedIndex()] = currentTextArea.getText();
         } catch (FileNotFoundException ex) {
             System.out.println("File Not Found");
         } catch (IOException ex) {
@@ -166,6 +166,7 @@ public class TextIO{
      *@param path "path" eða hlekkur af tagi streng sem vísar í skrá
      */
     protected void save(String path) {
+        if(textData[tabbedPane.getSelectedIndex()].equals(currentTextArea.getText())) return;
         if(path == null || !new File(path).exists()){
             saveAs();
         }else{
@@ -175,7 +176,6 @@ public class TextIO{
             catch(IOException e){
                 System.out.println("Cannot save to path");
             }
-            textar[tabbedPane.getSelectedIndex()] = currentTextArea.getText();
         }
     }
     /**
@@ -184,7 +184,7 @@ public class TextIO{
      * @param size stærð á fylkinu
      */
     protected void resizeArrays(int size){
-        String[] tempTextArr = textar;
+        String[] tempTextArr = textData;
         String[] tempSelArr = selPaths;
         String[] newTextArr = new String[size*2];
         String[] newSelArr = new String[size*2];
@@ -195,21 +195,21 @@ public class TextIO{
             newSelArr[i] = tempSelArr[i];
         }
         selPaths = newSelArr;
-        textar = newTextArr;
+        textData = newTextArr;
     }
     /**
      * 
      * @return true ef text != textArea.getText()(skjalið ekki vistað) annars false
      */
     protected boolean isUnsaved() {
-        return !textar[tabbedPane.getSelectedIndex()].equals(currentTextArea.getText());
+        return !textData[tabbedPane.getSelectedIndex()].equals(currentTextArea.getText());
     }
     /**
      * Opnar JFileChooser() vístar núverandi skjal í skrá sem notandi velur
      */
     protected void saveAs(){
         JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         fc.setAcceptAllFileFilterUsed(true);
         fc.setDialogTitle("Please Select a Folder");
         int val = fc.showSaveDialog(fc);
@@ -222,7 +222,7 @@ public class TextIO{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            textar[tabbedPane.getSelectedIndex()] = currentTextArea.getText();
+            textData[tabbedPane.getSelectedIndex()] = currentTextArea.getText();
         }
     }
     /**
@@ -276,7 +276,7 @@ public class TextIO{
             tabbedPane.getTitleAt(getTabbedPane().getSelectedIndex()));
         if(input == JOptionPane.YES_OPTION){
            save(getSelPathsAtIndex(getTabbedPane().getSelectedIndex()));
-           setTextarAtIndex(getTabbedPane().getSelectedIndex(), getCurrentTextArea().getText());
+           setTextDataAtIndex(getTabbedPane().getSelectedIndex(), getCurrentTextArea().getText());
         }
         return input;
     }

@@ -125,7 +125,6 @@ public class ReplaceFrame extends JDialog implements ActionListener {
         HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.yellow);
         for (int i = 0; i < indices.length; i++) {
             int idx = Integer.parseInt(indices[i]);
-            System.out.println(idx);
             try {
                 textIO.getCurrentTextArea().getHighlighter().addHighlight(idx,
                 idx + input.length(), painter);

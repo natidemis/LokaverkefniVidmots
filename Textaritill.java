@@ -306,12 +306,11 @@ public class Textaritill extends JFrame {
         if(textIO.isUnsaved()){
             prompt = textIO.savePrompt();
         }
-        System.out.println(prompt);
         if(Math.abs(prompt) == 1 || prompt == 0){
             textIO.setSelPathsAtIndex(textIO.getTabbedPane().getSelectedIndex(),null);
             tPane.setTitleAt(textIO.getTabbedPane().getSelectedIndex(),"untitled");
             textIO.getCurrentTextArea().setText("");
-            textIO.setTextarAtIndex(textIO.getTabbedPane().getSelectedIndex(), "");
+            textIO.setTextDataAtIndex(textIO.getTabbedPane().getSelectedIndex(), "");
         }
     }
     /**
@@ -389,7 +388,7 @@ public class Textaritill extends JFrame {
                     textIO.setCurrentTextArea((JTextArea)vp.getView());
                     String selPath = textIO.getSelPathsAtIndex(textIO.getTabbedPane().getSelectedIndex());
                     textIO.setTitle(selPath.substring(selPath.lastIndexOf("\\")+1));
-                    if(tPane.getTabCount() >= textIO.getTextar().length-3) textIO.resizeArrays(tPane.getTabCount());
+                    if(tPane.getTabCount() >= textIO.getTextData().length-3) textIO.resizeArrays(tPane.getTabCount());
                 }
             });
     }
@@ -418,7 +417,7 @@ public class Textaritill extends JFrame {
                 boolean unsaved = false;
                 for(int i = 0; i < tPane.getTabCount(); i++){
                     JTextArea area = textIO.getTextAreaAtIndex(i);
-                    if(!area.getText().equals(textIO.getTextarAtIndex(i))) unsaved = true;
+                    if(!area.getText().equals(textIO.getTextDataAtIndex(i))) unsaved = true;
                 }
                 if(unsaved){
                     closingProcedure();
@@ -439,7 +438,7 @@ public class Textaritill extends JFrame {
             int input = JOptionPane.showConfirmDialog(null, "Do you want to save changes to " + textIO.getTitle());
             if(input == JOptionPane.YES_OPTION){
                textIO.getSelPathsAtIndex(textIO.getTabbedPane().getSelectedIndex());
-               textIO.setTextarAtIndex(textIO.getTabbedPane().getSelectedIndex(), textIO.getCurrentTextArea().getText());
+               textIO.setTextDataAtIndex(textIO.getTabbedPane().getSelectedIndex(), textIO.getCurrentTextArea().getText());
                textIO.save(textIO.getSelPathsAtIndex(textIO.getTabbedPane().getSelectedIndex()));
                setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             }else if(input == JOptionPane.NO_OPTION){
